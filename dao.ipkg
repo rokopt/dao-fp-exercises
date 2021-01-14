@@ -1,0 +1,7 @@
+package dao
+
+modules = Chapter2
+
+depends = contrib
+
+sourcedir = "src"
