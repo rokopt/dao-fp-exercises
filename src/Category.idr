@@ -46,3 +46,12 @@ public export
 preCompose : {cat : Category} -> {a, b, c : Object cat} ->
   Morphism cat a b -> Morphism cat b c -> Morphism cat a c
 preCompose f = \h => h .* f
+
+public export
+IsInverse : {cat : Category} -> {a, b: Object cat} ->
+    Morphism cat a b -> Morphism cat b a -> Type
+IsInverse f g = (g .* f = catId a, f .* g = catId b)
+
+public export
+Isomorphic : {cat : Category} -> (a, b: Object cat) -> Type
+Isomorphic a b = (f : Morphism cat a b ** g : Morphism cat b a ** IsInverse f g)
