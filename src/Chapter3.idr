@@ -44,7 +44,9 @@ Exercise_3_1_4 : {cat : Category} -> {a, b : Object cat} ->
     (IsIsomorphism {cat} {a} {b})
     (fst (Exercise_3_1_3 {cat} {a} {b} aIsTerminal bIsTerminal))
 Exercise_3_1_4 {cat} {a} {b} aIsTerminal bIsTerminal =
-  case (aIsTerminal b, bIsTerminal a) of
-    ((baIso ** (_, onlyBA)), (abIso ** (_, onlyAB))) =>
-      (?Exercise_3_1_4_hole_property,
-       ?Exericse_3_1_4_hole_unique)
+  ((fst (aIsTerminal b) **
+   (IdOnlyTerminalEndomorphism aIsTerminal _,
+    IdOnlyTerminalEndomorphism bIsTerminal _)),
+   \g : Morphism cat a b,
+    g' : DPair (Morphism cat b a) (IsInverse {cat} g) =>
+      snd (snd (bIsTerminal a)) g ())
