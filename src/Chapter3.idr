@@ -1,8 +1,13 @@
 module Chapter3
 
+import TypesAndFunctions
 import Category
 
 %default total
+
+Exercise_3_1_1 : {cat : Category} -> {a, b, c : Object cat} ->
+  Isomorphic {cat} a b -> Bijection (Morphism cat a c) (Morphism cat b c)
+Exercise_3_1_1 abIsomorphic = ?Exercise_3_1_1_hole
 
 Exercise_3_1_2 : {cat : Category} -> (a : Object cat) -> Isomorphic {cat} a a
 Exercise_3_1_2 a = (catId a ** catId a ** (LeftIdentity _ _, LeftIdentity _ _))
