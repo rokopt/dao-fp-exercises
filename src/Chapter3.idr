@@ -7,7 +7,24 @@ import Category
 
 Exercise_3_1_1 : {cat : Category} -> {a, b, c : Object cat} ->
   Isomorphic {cat} a b -> Bijection (Morphism cat a c) (Morphism cat b c)
-Exercise_3_1_1 abIsomorphic = ?Exercise_3_1_1_hole
+Exercise_3_1_1 {cat}
+  (abIsomorphism ** baIsomorphism ** (isLeftInverse, isRightInverse)) =
+    ((\f : Morphism cat a c => f .* baIsomorphism) **
+     (\g : Morphism cat b c => g .* abIsomorphism) **
+     (\f' : Morphism cat a c =>
+       let
+         assoc = Associativity cat f' baIsomorphism abIsomorphism
+         rightId = RightIdentity cat f'
+       in
+       replace {p=(\f'' => f'' = f')} (sym assoc)
+         (replace {p=(\z => f' .* z = f')} (sym isLeftInverse) rightId),
+      \g' : Morphism cat b c =>
+       let
+         assoc = Associativity cat g' abIsomorphism baIsomorphism
+         rightId = RightIdentity cat g'
+       in
+       replace {p=(\g'' => g'' = g')} (sym assoc)
+         (replace {p=(\z => g' .* z = g')} (sym isRightInverse) rightId)))
 
 Exercise_3_1_2 : {cat : Category} -> (a : Object cat) -> Isomorphic {cat} a a
 Exercise_3_1_2 a = (catId a ** catId a ** (LeftIdentity _ _, LeftIdentity _ _))
