@@ -32,11 +32,11 @@ Exercise_3_1_2 a = (catId a ** catId a ** (LeftIdentity _ _, LeftIdentity _ _))
 Exercise_3_1_3 : {cat : Category} -> {a, b : Object cat} ->
   IsTerminal {cat} a -> IsTerminal {cat} b -> Isomorphic {cat} a b
 Exercise_3_1_3 aIsTerminal bIsTerminal =
-  case (aIsTerminal b, bIsTerminal a) of
-    ((baIso ** (_, onlyBA)), (abIso ** (_, onlyAB))) =>
-      (abIso ** baIso **
-        (IdOnlyTerminalEndomorphism aIsTerminal (baIso .* abIso),
-         IdOnlyTerminalEndomorphism bIsTerminal (abIso .* baIso)))
+  (fst (bIsTerminal a) ** fst (aIsTerminal b) **
+    (IdOnlyTerminalEndomorphism aIsTerminal
+      (fst (aIsTerminal b) .* fst (bIsTerminal a)),
+    (IdOnlyTerminalEndomorphism bIsTerminal
+      (fst (bIsTerminal a) .* fst (aIsTerminal b)))))
 
 Exercise_3_1_4 : {cat : Category} -> {a, b : Object cat} ->
   (aIsTerminal : IsTerminal {cat} a) -> (bIsTerminal : IsTerminal {cat} b) ->
