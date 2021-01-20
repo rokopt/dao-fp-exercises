@@ -52,7 +52,7 @@ IsInverse f g = (g .* f = catId a, f .* g = catId b)
 public export
 IsIsomorphism : {cat : Category} -> {a, b: Object cat} ->
   Morphism cat a b -> Type
-IsIsomorphism f = DPair (Morphism cat b a) (IsInverse f)
+IsIsomorphism f = DPair (Morphism cat b a) (Category.IsInverse f)
 
 public export
 Isomorphic : {cat : Category} -> (a, b: Object cat) -> Type
