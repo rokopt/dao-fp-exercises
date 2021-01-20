@@ -1,11 +1,8 @@
 module Category
 
-%default total
+import TypesAndFunctions
 
-public export
-FunctionalExtensionality : (a, b : Type) -> Type
-FunctionalExtensionality a b =
-  {f, g : a -> b} -> ((x : a) -> f x = g x) -> f = g
+%default total
 
 {- Often needed to do category theory in Idris. -}
 public export
