@@ -1,6 +1,8 @@
 package dao
 
-modules = Chapter2
+modules = Category
+    , Chapter2
+    , Chapter3
 
 depends = contrib
 
