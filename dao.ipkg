@@ -1,6 +1,7 @@
 package dao
 
-modules = Category
+modules = TypesAndFunctions
+    , Category
     , Chapter2
     , Chapter3
 
