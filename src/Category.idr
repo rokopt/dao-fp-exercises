@@ -55,3 +55,18 @@ IsInverse f g = (g .* f = catId a, f .* g = catId b)
 public export
 Isomorphic : {cat : Category} -> (a, b: Object cat) -> Type
 Isomorphic a b = (f : Morphism cat a b ** g : Morphism cat b a ** IsInverse f g)
+
+public export
+IsUnique : {cat : Category} -> {a, b : Object cat} ->
+  (property : Morphism cat a b -> Type) -> (f : Morphism cat a b) -> Type
+IsUnique {cat} {a} {b} property f =
+    (property f, (g : Morphism cat a b) -> property g -> g = f)
+
+public export
+IsOnlyMorphism : {cat : Category} -> {a, b : Object cat} ->
+    Morphism cat a b -> Type
+IsOnlyMorphism f = IsUnique (\_ => ()) f
+
+public export
+IsTerminal : {cat : Category} -> (a : Object cat) -> Type
+IsTerminal {cat} a = (b : Object cat) -> DPair (Morphism cat b a) IsOnlyMorphism
