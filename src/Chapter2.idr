@@ -1,5 +1,6 @@
 module Chapter2
 
+import TypesAndFunctions
 import Category
 
 %default total
