@@ -43,4 +43,8 @@ Exercise_3_1_4 : {cat : Category} -> {a, b : Object cat} ->
   IsUnique {cat} {a} {b}
     (IsIsomorphism {cat} {a} {b})
     (fst (Exercise_3_1_3 {cat} {a} {b} aIsTerminal bIsTerminal))
-Exercise_3_1_4 aIsTerminal bIsTerminal = ?Exercise_3_1_4_hole
+Exercise_3_1_4 {cat} {a} {b} aIsTerminal bIsTerminal =
+  case (aIsTerminal b, bIsTerminal a) of
+    ((baIso ** (_, onlyBA)), (abIso ** (_, onlyAB))) =>
+      (?Exercise_3_1_4_hole_property,
+       ?Exericse_3_1_4_hole_unique)
