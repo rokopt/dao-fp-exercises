@@ -50,6 +50,16 @@ IsInverse : {cat : Category} -> {a, b: Object cat} ->
 IsInverse f g = (g .* f = catId a, f .* g = catId b)
 
 public export
+Naturality : {cat : Category} -> {a, b, x, y : Object cat} ->
+  (f : Morphism cat a b) -> (g : Morphism cat y x) ->
+  (preCompose {cat} {a=y} {b=x} {c=b} g) .
+    (postCompose {cat} {a=x} {b=a} {c=b} f) =
+  (postCompose {cat} {a=y} {b=a} {c=b} f) .
+    (preCompose {cat} {a=y} {b=x} {c=a} g)
+Naturality f g =
+  functionalExtensionality (\h : Morphism cat x a => Associativity cat f h g)
+
+public export
 IsIsomorphism : {cat : Category} -> {a, b: Object cat} ->
   Morphism cat a b -> Type
 IsIsomorphism f = DPair (Morphism cat b a) (Category.IsInverse f)
