@@ -51,7 +51,6 @@ Exercise_3_1_4 {cat} {a} {b} aIsTerminal bIsTerminal =
     g' : DPair (Morphism cat b a) (IsInverse {cat} g) =>
       snd (snd (bIsTerminal a)) g ())
 
-public export
 Exercise_3_1_2_left : {cat : Category} -> {a, b, x, y : Object cat} ->
   (fInv : Morphism cat b a) -> (g : Morphism cat x y) ->
   (h : Morphism cat a x) ->
@@ -60,7 +59,6 @@ Exercise_3_1_2_left : {cat : Category} -> {a, b, x, y : Object cat} ->
   After cat {a=b} {b=x} {c=y} g (After cat {a=b} {b=a} {c=x} h fInv)
 Exercise_3_1_2_left fInv g h = Associativity cat g h fInv
 
-public export
 Exercise_3_1_2_right : {cat : Category} -> {a, b, x, y : Object cat} ->
   (fInv : Morphism cat b a) -> (g : Morphism cat x y) ->
   (h : Morphism cat a x) ->
