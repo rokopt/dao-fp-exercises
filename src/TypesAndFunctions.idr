@@ -3,6 +3,10 @@ module TypesAndFunctions
 %default total
 
 public export
+appEq : {a, b : Type} -> {f, g : a -> b} -> {x : a} -> f = g -> f x = g x
+appEq Refl = Refl
+
+public export
 FunctionalExtensionality : (a, b : Type) -> Type
 FunctionalExtensionality a b =
   {f, g : a -> b} -> ((x : a) -> f x = g x) -> f = g
