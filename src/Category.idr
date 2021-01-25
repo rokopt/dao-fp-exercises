@@ -109,11 +109,6 @@ ObserverChange {cat} observerA observerB =
   Morphism cat observerA subject -> Morphism cat observerB subject
 
 public export
-IsBijectionForEach : {a : Type} -> {b, c : a -> Type} ->
-  ((x : a) -> b x -> c x) -> Type
-IsBijectionForEach alpha = (x : a) -> IsBijection (alpha x)
-
-public export
 InvertibleSubjectChange : {cat : Category} ->
   (subjectA, subjectB : Object cat) -> Type
 InvertibleSubjectChange subjectA subjectB =

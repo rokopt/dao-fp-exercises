@@ -30,3 +30,22 @@ IsBijection {a} {b} f = DPair (b -> a) (IsInverse f)
 public export
 Bijection : (a, b : Type) -> Type
 Bijection a b = DPair (a -> b) IsBijection
+
+public export
+IsBijectionForEach : {a : Type} -> {b, c : a -> Type} ->
+  ((x : a) -> b x -> c x) -> Type
+IsBijectionForEach alpha = (x : a) -> IsBijection (alpha x)
+
+public export
+ForEachInverse : {a : Type} -> {b, c : a -> Type} ->
+  {alpha : (x : a) -> b x -> c x} -> IsBijectionForEach alpha ->
+  ((x : a) -> c x -> b x)
+ForEachInverse isBijection x cx = fst (isBijection x) cx
+
+public export
+ForEachInverseIsInverse : {a : Type} -> {b, c : a -> Type} ->
+  {alpha : (x : a) -> b x -> c x} -> (isBijection : IsBijectionForEach alpha) ->
+  ((x : a) -> IsInverse (alpha x) (ForEachInverse {alpha} isBijection x))
+ForEachInverseIsInverse isBijection x =
+  let isBijectionX = snd (isBijection x) in
+  (\bx => fst isBijectionX bx, \cx => snd isBijectionX cx)
