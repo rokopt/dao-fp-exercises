@@ -51,18 +51,18 @@ Exercise_3_1_4 {cat} {a} {b} aIsTerminal bIsTerminal =
     g' : DPair (Morphism cat b a) (IsInverse {cat} g) =>
       snd (snd (bIsTerminal a)) g ())
 
-Exercise_3_1_2_left : {cat : Category} -> {a, b, x, y : Object cat} ->
+Exercise_3_2_1_left : {cat : Category} -> {a, b, x, y : Object cat} ->
   (fInv : Morphism cat b a) -> (g : Morphism cat x y) ->
   (h : Morphism cat a x) ->
   ((preCompose {cat} {a=b} {b=a} {c=y} fInv) .
     (postCompose {cat} {a} {b=x} {c=y} g)) h =
   After cat {a=b} {b=x} {c=y} g (After cat {a=b} {b=a} {c=x} h fInv)
-Exercise_3_1_2_left fInv g h = Associativity cat g h fInv
+Exercise_3_2_1_left fInv g h = Associativity cat g h fInv
 
-Exercise_3_1_2_right : {cat : Category} -> {a, b, x, y : Object cat} ->
+Exercise_3_2_1_right : {cat : Category} -> {a, b, x, y : Object cat} ->
   (fInv : Morphism cat b a) -> (g : Morphism cat x y) ->
   (h : Morphism cat a x) ->
   ((postCompose {cat} {a=b} {b=x} {c=y} g) .
     (preCompose {cat} {a=b} {b=a} {c=x} fInv)) h =
   After cat {a=b} {b=x} {c=y} g (After cat {a=b} {b=a} {c=x} h fInv)
-Exercise_3_1_2_right fInv g h = Refl
+Exercise_3_2_1_right fInv g h = Refl
