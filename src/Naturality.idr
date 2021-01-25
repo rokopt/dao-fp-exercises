@@ -1,0 +1,3 @@
+module Naturality
+
+%default total

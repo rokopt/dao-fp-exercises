@@ -1,0 +1,3 @@
+module Universality
+
+%default total

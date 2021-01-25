@@ -1,0 +1,3 @@
+module Isomorphism
+
+%default total

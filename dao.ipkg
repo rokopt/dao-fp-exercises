@@ -1,6 +1,9 @@
 package dao
 
 modules = TypesAndFunctions
+    , Isomorphism
+    , Universality
+    , Naturality
     , Category
     , Chapter2
     , Chapter3
