@@ -141,6 +141,7 @@ ObserverChangeIsNatural {cat} beta =
   (x, y : Object cat) -> (g : Morphism cat x y) ->
     postCompose g . beta x = beta y . postCompose g
 
+public export
 SubjectChangeInducedMorphism : {cat : Category} ->
   {subjectA, subjectB : Object cat} ->
   (alpha : SubjectChange {cat} subjectA subjectB) ->
@@ -148,6 +149,7 @@ SubjectChangeInducedMorphism : {cat : Category} ->
 SubjectChangeInducedMorphism {subjectA} {subjectB} alpha =
   alpha subjectA (catId subjectA)
 
+public export
 SubjectChangeIsPostComposition : {cat : Category} ->
   {subjectA, subjectB : Object cat} ->
   (alpha : SubjectChange {cat} subjectA subjectB) ->
@@ -163,6 +165,7 @@ SubjectChangeIsPostComposition {subjectA} {subjectB} alpha natural x =
     (LeftIdentity cat g)
     (appEq {x=(catId subjectA)} (natural _ _ g)))
 
+public export
 ObserverChangeInducedMorphism : {cat : Category} ->
   {observerA, observerB : Object cat} ->
   (beta : ObserverChange {cat} observerA observerB) ->
@@ -170,6 +173,7 @@ ObserverChangeInducedMorphism : {cat : Category} ->
 ObserverChangeInducedMorphism {observerA} {observerB} beta =
   beta observerA (catId observerA)
 
+public export
 ObserverChangeIsPreComposition : {cat : Category} ->
   {observerA, observerB : Object cat} ->
   (beta : ObserverChange {cat} observerA observerB) ->
