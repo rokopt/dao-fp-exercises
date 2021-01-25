@@ -2,6 +2,9 @@ module Chapter3
 
 import TypesAndFunctions
 import Category
+import Isomorphism
+import Universality
+import Naturality
 
 %default total
 
