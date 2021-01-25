@@ -66,3 +66,20 @@ Exercise_3_2_1_right : {cat : Category} -> {a, b, x, y : Object cat} ->
     (preCompose {cat} {a=b} {b=a} {c=x} fInv)) h =
   After cat {a=b} {b=x} {c=y} g (After cat {a=b} {b=a} {c=x} h fInv)
 Exercise_3_2_1_right fInv g h = Refl
+
+Exercise_3_3_1 : {cat : Category} ->
+  {observerA, observerB : Object cat} ->
+  (beta : ObserverChange {cat} observerA observerB) ->
+  Morphism cat observerB observerA
+Exercise_3_3_1 = ObserverChangeInducedMorphism
+
+Exercise_3_3_2 : {cat : Category} ->
+  {observerA, observerB : Object cat} ->
+  (beta : ObserverChange {cat} observerA observerB) ->
+  (natural : ObserverChangeIsNatural {cat} {observerA} {observerB} beta) ->
+  (y : Object cat) -> (g : Morphism cat observerA y) ->
+  beta y g =
+    After cat {a=observerB} {b=observerA} {c=y}
+      g (Exercise_3_3_1 {cat} {observerA} {observerB} beta)
+Exercise_3_3_2 beta natural y g =
+  appEq {x=g} (ObserverChangeIsPreComposition beta natural y)
