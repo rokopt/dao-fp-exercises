@@ -24,6 +24,11 @@ IsInverse : {a, b : Type} -> (a -> b) -> (b -> a) -> Type
 IsInverse f g = (IsLeftInverse f g, IsRightInverse f g)
 
 public export
+isInverseSym : {a, b : Type} -> {f : a -> b} -> {g : b -> a} ->
+               IsInverse f g -> IsInverse g f
+isInverseSym (isLeftInv, isRightInv) = (isRightInv, isLeftInv)
+
+public export
 IsBijection : {a, b : Type} -> (a -> b) -> Type
 IsBijection {a} {b} f = DPair (b -> a) (IsInverse f)
 
@@ -49,3 +54,10 @@ ForEachInverseIsInverse : {a : Type} -> {b, c : a -> Type} ->
 ForEachInverseIsInverse isBijection x =
   let isBijectionX = snd (isBijection x) in
   (\bx => fst isBijectionX bx, \cx => snd isBijectionX cx)
+
+public export
+forEachInverseSym : {a : Type} -> {b, c : a -> Type} ->
+  {f : (x : a) -> b x -> c x} -> (isBijection : IsBijectionForEach f) ->
+  IsBijectionForEach {a} {b=c} {c=b} (ForEachInverse {f} isBijection)
+forEachInverseSym isBijection x =
+  (f x ** (snd (snd (isBijection x)), fst (snd (isBijection x))))
