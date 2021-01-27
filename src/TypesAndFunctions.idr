@@ -16,6 +16,14 @@ IsLeftInverse : {a, b : Type} -> (a -> b) -> (b -> a) -> Type
 IsLeftInverse f g = (x : a) -> g (f x) = x
 
 public export
+HasLeftInverseImpliesInjective :
+  {a, b : Type} -> {f : a -> b} -> {g : b -> a} ->
+  IsLeftInverse f g ->
+  {x, x' : a} -> f x = f x' -> x = x'
+HasLeftInverseImpliesInjective isLeftInv {x} {x'} fxeq =
+  trans (sym (isLeftInv x)) (trans (cong g fxeq) (isLeftInv x'))
+
+public export
 IsRightInverse : {a, b : Type} -> (a -> b) -> (b -> a) -> Type
 IsRightInverse {a} {b} f g = IsLeftInverse {b=a} {a=b} g f
 
