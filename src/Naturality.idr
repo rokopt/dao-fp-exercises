@@ -2,6 +2,7 @@ module Naturality
 
 import public TypesAndFunctions
 import public Category
+import public Isomorphism
 
 %default total
 
@@ -102,3 +103,53 @@ ObserverChangeIsPreComposition {observerA} {observerB} beta natural y =
         beta y f' = After cat f (beta observerA (Identity cat observerA)))}
     (RightIdentity cat f)
     (sym (appEq {x=(catId observerA)} (natural _ _ f))))
+
+public export
+NaturalBijectiveSubjectChangeInducesIsomorphism :
+  {cat : Category} ->
+  {subjectA, subjectB : Object cat} ->
+  (alpha : SubjectChange {cat} subjectA subjectB) ->
+  (natural : SubjectChangeIsNatural {cat} {subjectA} {subjectB} alpha) ->
+  (bijective : IsBijectionForEach alpha) ->
+  IsIsomorphism {cat} {a=subjectA} {b=subjectB}
+    (SubjectChangeInducedMorphism {cat} {subjectA} {subjectB} alpha)
+NaturalBijectiveSubjectChangeInducesIsomorphism
+  {subjectA} {subjectB} alpha natural bijective =
+    let
+      bRight = snd (ForEachInverseIsInverse bijective subjectB) (catId subjectB)
+    in
+    ((fst (bijective subjectB) (Identity cat subjectB)) **
+     (HasLeftInverseImpliesInjective
+        {f=(alpha subjectA)} {g=(fst (bijective subjectA))}
+        {x=(After cat
+          (fst (bijective subjectB) (Identity cat subjectB))
+          (alpha subjectA (Identity cat subjectA)))}
+        {x'=(catId subjectA)}
+        (fst (ForEachInverseIsInverse bijective subjectA))
+        (trans
+          (replace
+            {p=
+              (\g' =>
+                alpha subjectA
+                  (After cat
+                     (fst (bijective subjectB) (Identity cat subjectB))
+                       (alpha subjectA (Identity cat subjectA))) =
+                     After cat g' (alpha subjectA (Identity cat subjectA)))}
+                     bRight
+                     (appEq
+                       {x=(fst (bijective subjectB) (Identity cat subjectB))}
+                       (natural _ _ (alpha _ (catId subjectA)))))
+          (LeftIdentity cat (alpha subjectA (Identity cat subjectA)))),
+      (trans
+        (replace
+          {p=
+            (\g' =>
+              After cat
+                (alpha subjectA (Identity cat subjectA))
+                   (fst (bijective subjectB) (Identity cat subjectB)) =
+                      alpha subjectB g')}
+           (LeftIdentity cat (fst (bijective subjectB) (Identity cat subjectB)))
+           (sym
+             (appEq {x=(catId subjectA)}
+             (natural _ _ (fst (bijective subjectB) (catId subjectB))))))
+        bRight)))
