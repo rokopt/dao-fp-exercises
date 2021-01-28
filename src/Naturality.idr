@@ -153,3 +153,48 @@ NaturalBijectiveSubjectChangeInducesIsomorphism
              (appEq {x=(catId subjectA)}
              (natural _ _ (fst (bijective subjectB) (catId subjectB))))))
         bRight)))
+
+public export
+NaturalBijectiveObserverChangeInducesIsomorphism :
+  {cat : Category} ->
+  {observerA, observerB : Object cat} ->
+  (beta : ObserverChange {cat} observerA observerB) ->
+  (natural : ObserverChangeIsNatural {cat} {observerA} {observerB} beta) ->
+  (bijective : IsBijectionForEach beta) ->
+  IsIsomorphism {cat} {a=observerB} {b=observerA}
+    (ObserverChangeInducedMorphism {cat} {observerA} {observerB} beta)
+NaturalBijectiveObserverChangeInducesIsomorphism
+  {observerA} {observerB} beta natural bijective =
+    let
+      bRight =
+        snd (ForEachInverseIsInverse bijective observerB) (catId observerB)
+    in
+    (fst (bijective observerB) (catId observerB) **
+     (trans
+       (replace
+          {p=
+            (\g' =>
+              After cat
+                (fst (bijective observerB) (Identity cat observerB))
+                (beta observerA (Identity cat observerA)) =
+              beta observerB g'
+            )}
+          (RightIdentity cat
+            (fst (bijective observerB) (Identity cat observerB)))
+          (appEq {x=(catId observerA)}
+             (natural _ _ (fst (bijective observerB) (catId observerB))))
+      ) bRight,
+      HasLeftInverseImpliesInjective
+        {f=(beta observerA)} {g=(fst (bijective observerA))}
+        (fst (ForEachInverseIsInverse bijective observerA))
+        (trans (sym (
+           replace
+             {p=(\g' =>
+                   After cat (beta observerA (Identity cat observerA)) g' =
+                   beta observerA (After cat
+                     (beta observerA (Identity cat observerA))
+                      (fst (bijective observerB) (Identity cat observerB))))}
+             bRight
+             (appEq {x=(fst (bijective observerB) (catId observerB))}
+              (natural _ _ (beta _ (catId observerA))))
+        )) (RightIdentity cat _))))
