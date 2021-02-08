@@ -43,3 +43,14 @@ public export
 preCompose : {cat : Category} -> {a, b, c : Object cat} ->
   Morphism cat a b -> Morphism cat b c -> Morphism cat a c
 preCompose f = \h => h .* f
+
+public export
+TypeCategory : Category
+TypeCategory = MkCategory
+  Type
+  (\a, b => a -> b)
+  (\_ => id)
+  (\g, f => g . f)
+  (\m => functionalExtensionality (\_ => Refl))
+  (\m => functionalExtensionality (\_ => Refl))
+  (\h, g, f => Refl)
