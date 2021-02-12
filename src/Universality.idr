@@ -1,6 +1,7 @@
 module Universality
 
 import public Category
+import public Isomorphism
 
 %default total
 
@@ -31,3 +32,33 @@ IdOnlyTerminalEndomorphism : {cat : Category} -> {a : Object cat} ->
   f = Identity cat a
 IdOnlyTerminalEndomorphism {cat} {a} aIsTerminal f =
   OnlyMorphismIsUnique (snd (aIsTerminal a)) f (Identity cat a)
+
+public export
+IsInitial : {cat : Category} -> (a : Object cat) -> Type
+IsInitial {cat} a = (b : Object cat) -> DPair (Morphism cat a b) IsOnlyMorphism
+
+public export
+IdOnlyInitialEndomorphism : {cat : Category} -> {a : Object cat} ->
+  (aIsInitial : IsInitial {cat} a) -> (f : Morphism cat a a) ->
+  f = Identity cat a
+IdOnlyInitialEndomorphism {cat} {a} aIsInitial f =
+  OnlyMorphismIsUnique (snd (aIsInitial a)) f (Identity cat a)
+
+public export
+IsUniqueMorphismWithProperty : {cat : Category} -> {a, b : Object cat} ->
+  (property : Morphism cat a b -> Type) -> (m : Morphism cat a b) -> Type
+IsUniqueMorphismWithProperty property m =
+  (property m, (m' : Morphism cat a b) -> property m' -> m' = m)
+
+public export
+AreUniquelyIsomorphic : {cat : Category} -> (a, b : Object cat) -> Type
+AreUniquelyIsomorphic {cat} a b =
+  (iso : Isomorphic a b **
+   IsUniqueMorphismWithProperty IsIsomorphism (fst iso))
+
+public export
+IsUniqueUpToUniqueIsomorphism : {cat : Category} ->
+  (property : Object cat -> Type) -> Object cat -> Type
+IsUniqueUpToUniqueIsomorphism {cat} property a =
+  (property a,
+   (b : Object cat) -> property b -> AreUniquelyIsomorphic a b)
