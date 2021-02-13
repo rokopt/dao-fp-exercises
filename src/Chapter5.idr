@@ -34,35 +34,6 @@ Exercise_5_1_1_product_unit_isomorphism : {ccc : CartesianClosedCategory} ->
 Exercise_5_1_1_product_unit_isomorphism {ccc} a =
     SubjectChangeInducedMorphism (Exercise_5_1_1_product_unit_subject_change a)
 
-Exercise_5_1_1_product_unit_isomorphic : {ccc : CartesianClosedCategory} ->
-    (a : CCC_object ccc) ->
-    IsIsomorphism {cat=(CCC_cat ccc)}
-        {a=(CCC_product {ccc} (CCC_terminal ccc) a)}
-        {b=a}
-        (Exercise_5_1_1_product_unit_isomorphism {ccc} a)
-Exercise_5_1_1_product_unit_isomorphic {ccc} a =
-    (CCC_morphism_product (fst (CCC_is_terminal ccc a)) (Identity _ a) **
-     (?Exercise_5_1_1_product_unit_isomorphic_hole_left,
-      ?Exercise_5_1_1_product_unit_isomorphic_hole_right))
-
-Exercise_5_1_1_product_unit_subject_change_is_bijective :
-    {ccc : CartesianClosedCategory} ->
-    (a : CCC_object ccc) ->
-    IsBijectionForEach
-        (Exercise_5_1_1_product_unit_subject_change {ccc} a)
-Exercise_5_1_1_product_unit_subject_change_is_bijective {ccc} a x =
-    let
-        isTerminal = snd (snd (CCC_is_terminal ccc a))
-    in
-    ((\f =>
-        After _
-            (CCC_morphism_product (fst (CCC_is_terminal ccc a)) (Identity _ a))
-            f) **
-     (\f =>
-        ?Exercise_5_1_1_product_unit_subject_change_is_bijective_hole_left,
-      \f =>
-        ?Exercise_5_1_1_product_unit_subject_change_is_bijective_hole_right))
-
 {- This is not the only choice of arrow with this domain and codomain --
  - see Exercise 5.1.4 below. -}
 Exercise_5_1_2 : {ccc : CartesianClosedCategory} -> (a, b : CCC_object ccc) ->
