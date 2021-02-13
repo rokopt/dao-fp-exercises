@@ -140,6 +140,38 @@ morphismCoproduct : {c : Category} ->
 morphismCoproduct coproda {a} {b} m m' =
   fst (coproductProperty coproda (b ** (m, m')))
 
+parallelMorphismProduct : {c : Category} ->
+  {a, a', b, b' : Object c} ->
+  (proda : Product {cat=c} a a') ->
+  (prodb : Product {cat=c} b b') ->
+  (m : Morphism c a b) -> (m' : Morphism c a' b') ->
+  Morphism c
+    (productObject {cat=c} {a=a} {b=a'} proda)
+    (productObject {cat=c} {a=b} {b=b'} prodb)
+parallelMorphismProduct {c} proda prodb m m' =
+  let
+    projFromA = productProjections proda
+    leftProj = m .* (fst projFromA)
+    rightProj = m' .* (snd projFromA)
+  in
+  morphismProduct prodb leftProj rightProj
+
+parallelMorphismCoproduct : {c : Category} ->
+  {a, a', b, b' : Object c} ->
+  (coproda : Coproduct {cat=c} a a') ->
+  (coprodb : Coproduct {cat=c} b b') ->
+  (m : Morphism c a b) -> (m' : Morphism c a' b') ->
+  Morphism c
+    (coproductObject {cat=c} {a=a} {b=a'} coproda)
+    (coproductObject {cat=c} {a=b} {b=b'} coprodb)
+parallelMorphismCoproduct {c} coproda coprodb m m' =
+  let
+    injToB = coproductInjections coprodb
+    leftInj = (fst injToB) .* m
+    rightInj = (snd injToB) .* m'
+  in
+  morphismCoproduct coproda leftInj rightInj
+
 public export
 record CartesianClosedCategory where
   CCC_cat : Category
@@ -209,3 +241,21 @@ public export
 CCC_right : {ccc : CartesianClosedCategory} -> (a, b : CCC_object ccc) ->
   CCC_morphism {ccc} b (CCC_sum {ccc} a b)
 CCC_right a b = snd (coproductInjections (CCC_has_all_sums ccc a b))
+
+public export
+CCC_parallel_morphism_product : {ccc : CartesianClosedCategory} ->
+  {a, a', b, b' : CCC_object ccc} ->
+  CCC_morphism {ccc} a b -> CCC_morphism {ccc} a' b' ->
+  CCC_morphism {ccc} (CCC_product {ccc} a a') (CCC_product {ccc} b b')
+CCC_parallel_morphism_product {ccc} {a} {a'} {b} {b'} m m' =
+  parallelMorphismProduct
+    (CCC_has_all_products ccc a a') (CCC_has_all_products ccc b b') m m'
+
+public export
+CCC_parallel_morphism_sum : {ccc : CartesianClosedCategory} ->
+  {a, a', b, b' : CCC_object ccc} ->
+  CCC_morphism {ccc} a b -> CCC_morphism {ccc} a' b' ->
+  CCC_morphism {ccc} (CCC_sum {ccc} a a') (CCC_sum {ccc} b b')
+CCC_parallel_morphism_sum {ccc} {a} {a'} {b} {b'} m m' =
+  parallelMorphismCoproduct
+    (CCC_has_all_sums ccc a a') (CCC_has_all_sums ccc b b') m m'
