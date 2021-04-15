@@ -11,10 +11,10 @@ import Naturality
 Exercise_3_1_1 : {cat : Category} -> {a, b, c : Object cat} ->
   Isomorphic {cat} a b -> Bijection (Morphism cat a c) (Morphism cat b c)
 Exercise_3_1_1 {cat}
-  (abIsomorphism ** baIsomorphism ** (isLeftInverse, isRightInverse)) =
+  (abIsomorphism ** (baIsomorphism ** ((isLeftInverse, isRightInverse)))) =
     ((\f : Morphism cat a c => f .* baIsomorphism) **
-     (\g : Morphism cat b c => g .* abIsomorphism) **
-     (\f' : Morphism cat a c =>
+     ((\g : Morphism cat b c => g .* abIsomorphism) **
+     ((\f' : Morphism cat a c =>
        let
          assoc = Associativity cat f' baIsomorphism abIsomorphism
          rightId = RightIdentity cat f'
@@ -27,19 +27,20 @@ Exercise_3_1_1 {cat}
          rightId = RightIdentity cat g'
        in
        replace {p=(\g'' => g'' = g')} (sym assoc)
-         (replace {p=(\z => g' .* z = g')} (sym isRightInverse) rightId)))
+         (replace {p=(\z => g' .* z = g')} (sym isRightInverse) rightId)))))
 
 Exercise_3_1_2 : {cat : Category} -> (a : Object cat) -> Isomorphic {cat} a a
-Exercise_3_1_2 a = (catId a ** catId a ** (LeftIdentity _ _, LeftIdentity _ _))
+Exercise_3_1_2 a =
+  (catId a ** (catId a ** (LeftIdentity _ _, LeftIdentity _ _)))
 
 Exercise_3_1_3 : {cat : Category} -> {a, b : Object cat} ->
   IsTerminal {cat} a -> IsTerminal {cat} b -> Isomorphic {cat} a b
 Exercise_3_1_3 aIsTerminal bIsTerminal =
-  (fst (bIsTerminal a) ** fst (aIsTerminal b) **
+  (fst (bIsTerminal a) ** (fst (aIsTerminal b) **
     (IdOnlyTerminalEndomorphism aIsTerminal
       (fst (aIsTerminal b) .* fst (bIsTerminal a)),
     (IdOnlyTerminalEndomorphism bIsTerminal
-      (fst (bIsTerminal a) .* fst (aIsTerminal b)))))
+      (fst (bIsTerminal a) .* fst (aIsTerminal b))))))
 
 Exercise_3_1_4 : {cat : Category} -> {a, b : Object cat} ->
   (aIsTerminal : IsTerminal {cat} a) -> (bIsTerminal : IsTerminal {cat} b) ->
